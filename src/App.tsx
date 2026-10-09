@@ -193,8 +193,8 @@ export default function App() {
           
           {/* Zone 1: Brand Wordmark */}
           <a href="#" className="flex items-center gap-3 group shrink-0">
-            <div className="w-12 h-12 rounded-full bg-emerald-600/90 backdrop-blur-md border border-white/20 flex items-center justify-center text-white shadow-lg group-hover:bg-emerald-500 transition-colors">
-              <BookOpen className="w-6 h-6" />
+            <div className="w-12 h-12 rounded-full overflow-hidden border border-white/20 bg-white p-0.5">
+              <img src="/logo-tpq.pg.jpg" alt="Logo TPQ" className="w-full h-full object-contain" />
             </div>
             <div>
               <div className="text-lg font-bold tracking-tight text-white leading-tight">
