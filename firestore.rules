@@ -1,0 +1,76 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Reusable helpers
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isSignedIn() && (
+        request.auth.token.email == 'giar.hermawan4@guru.smp.belajar.id' ||
+        request.auth.token.email.matches('.*@guru\\.smp\\.belajar\\.id$')
+      );
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    // Validation Blueprints
+    function isValidPPDBRegistration(data) {
+      return data.fullName is string && data.fullName.size() <= 100 &&
+             data.email is string && data.email.size() <= 100 &&
+             data.whatsappNumber is string && data.whatsappNumber.size() <= 20 &&
+             data.registrationId is string && data.registrationId.size() <= 20 &&
+             data.status in ['pending', 'verified', 'rejected'];
+    }
+
+    function isValidNewsItem(data) {
+      return data.title is string && data.title.size() <= 200 &&
+             data.category in ['Kegiatan', 'Prestasi', 'Program', 'Pengumuman'] &&
+             data.excerpt is string && data.excerpt.size() <= 500;
+    }
+
+    // Default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Collections
+    match /ppdb_registrations/{regId} {
+      allow create: if isValidPPDBRegistration(incoming()) && 
+                       incoming().status == 'pending' &&
+                       incoming().createdAt == request.time;
+      allow read, update, delete: if isAdmin();
+    }
+
+    match /news/{newsId} {
+      allow read: if true;
+      allow write: if isAdmin() && isValidNewsItem(incoming());
+    }
+
+    match /gallery/{itemId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /contacts/{msgId} {
+      allow create: if incoming().status == 'unread' && incoming().createdAt == request.time;
+      allow read, update, delete: if isAdmin();
+    }
+    
+    // Public connection test
+    match /test/connection {
+      allow read: if true;
+    }
+  }
+}

@@ -1,0 +1,80 @@
+{
+  "entities": {
+    "PPDBRegistration": {
+      "title": "PPDB Registration",
+      "description": "Student registration data for PPDB 2026/2027",
+      "type": "object",
+      "properties": {
+        "registrationId": { "type": "string", "description": "Unique registration ID (e.g., AF-2026-001)" },
+        "fullName": { "type": "string", "maxLength": 100 },
+        "email": { "type": "string", "format": "email" },
+        "phone": { "type": "string", "pattern": "^[0-9+ ]{10,20}$" },
+        "originSchool": { "type": "string", "maxLength": 100 },
+        "status": { "type": "string", "enum": ["pending", "verified", "rejected"] },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["registrationId", "fullName", "email", "phone", "originSchool", "status", "createdAt"]
+    },
+    "NewsItem": {
+      "title": "News Item",
+      "description": "News articles and announcements",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string", "maxLength": 200 },
+        "category": { "type": "string", "enum": ["Kegiatan", "Prestasi", "Program", "Pengumuman"] },
+        "date": { "type": "string" },
+        "author": { "type": "string" },
+        "image": { "type": "string" },
+        "excerpt": { "type": "string", "maxLength": 500 },
+        "content": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["title", "category", "date", "author", "image", "excerpt", "createdAt"]
+    },
+    "GalleryItem": {
+      "title": "Gallery Item",
+      "description": "Photos for the school gallery",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string", "maxLength": 100 },
+        "category": { "type": "string", "enum": ["Kegiatan", "Fasilitas", "Prestasi", "Keagamaan"] },
+        "image": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["title", "category", "image", "createdAt"]
+    },
+    "ContactMessage": {
+      "title": "Contact Message",
+      "description": "Messages from the contact form",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "maxLength": 100 },
+        "email": { "type": "string", "format": "email" },
+        "subject": { "type": "string", "maxLength": 200 },
+        "message": { "type": "string", "maxLength": 2000 },
+        "status": { "type": "string", "enum": ["unread", "read", "replied"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "email", "subject", "message", "status", "createdAt"]
+    }
+  },
+  "firestore": {
+    "ppdb_registrations": {
+      "schema": "PPDBRegistration",
+      "description": "Collection of student registrations"
+    },
+    "news": {
+      "schema": "NewsItem",
+      "description": "Collection of news articles"
+    },
+    "gallery": {
+      "schema": "GalleryItem",
+      "description": "Collection of gallery items"
+    },
+    "contacts": {
+      "schema": "ContactMessage",
+      "description": "Collection of contact messages"
+    }
+  }
+}

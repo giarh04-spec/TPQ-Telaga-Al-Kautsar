@@ -1,0 +1,6 @@
+{
+  "name": "TPQ Telaga Al Kautsar",
+  "description": "Website resmi TPQ Telaga Al Kautsar - Generasi Qur'ani, Cerdas & Berakhlak Mulia",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
